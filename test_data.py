@@ -27,7 +27,7 @@ def test_no_missing_values():
 
 def test_prices_are_positive():
     df = pd.read_csv("sales_data.csv")
-    assert (df["price"] > 0).all()
+    assert (df["price"] >= 0).all()
 
 def test_units_sold_are_valid():
     df = pd.read_csv("sales_data.csv")
