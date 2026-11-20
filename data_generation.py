@@ -26,7 +26,7 @@ for i in range(1, 51):
 
 # Generate 365 days of sales data
 dates = pd.date_range(
-    end=pd.Timestamp.today().normalize(),
+    end=pd.Timestamp("2026-11-20"),
     periods=365,
     freq="D"
 )
