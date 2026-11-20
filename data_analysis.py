@@ -1,3 +1,4 @@
+
 import matplotlib.pyplot as plt
 import pandas as pd
 
@@ -45,4 +46,26 @@ plt.xticks(rotation=45)
 plt.tight_layout()
 
 plt.savefig("revenue_chart.png")
+plt.show()
+
+# ===== MONTHLY SALES TREND CHART =====
+
+df["date"] = pd.to_datetime(df["date"])
+
+monthly_sales = df.groupby(
+    df["date"].dt.to_period("M")
+)["revenue"].sum()
+
+plt.figure(figsize=(10, 6))
+
+monthly_sales.plot(kind="line", marker="o")
+
+plt.title("Monthly Sales Revenue Trend")
+plt.xlabel("Month")
+plt.ylabel("Total Revenue")
+plt.xticks(rotation=45)
+plt.grid(True)
+plt.tight_layout()
+
+plt.savefig("monthly_sales_trend.png")
 plt.show()
