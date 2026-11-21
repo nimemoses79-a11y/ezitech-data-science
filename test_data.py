@@ -1,3 +1,4 @@
+
 from pathlib import Path
 import pandas as pd
 from pandas.api.types import (
@@ -5,10 +6,14 @@ from pandas.api.types import (
     is_integer_dtype,
     is_string_dtype
 )
+import nbformat
+from nbclient import NotebookClient
+
 
 def test_sales_data_exists():
     df = pd.read_csv("sales_data.csv")
     assert not df.empty
+
 
 def test_correct_columns():
     df = pd.read_csv("sales_data.csv")
@@ -23,6 +28,7 @@ def test_correct_columns():
 
     assert list(df.columns) == expected_columns
 
+
 def test_dataset_has_50_products_for_365_days():
     df = pd.read_csv("sales_data.csv")
 
@@ -30,17 +36,21 @@ def test_dataset_has_50_products_for_365_days():
     assert df["product_id"].nunique() == 50
     assert df["date"].nunique() == 365
 
+
 def test_no_missing_values():
     df = pd.read_csv("sales_data.csv")
     assert df.isnull().sum().sum() == 0
+
 
 def test_prices_are_valid():
     df = pd.read_csv("sales_data.csv")
     assert (df["price"] >= 0).all()
 
+
 def test_units_sold_are_valid():
     df = pd.read_csv("sales_data.csv")
     assert (df["units_sold"] >= 0).all()
+
 
 def test_column_data_types():
     df = pd.read_csv("sales_data.csv")
@@ -62,9 +72,6 @@ def test_column_data_types():
 
     assert parsed_dates.notna().all()
 
-    from pathlib import Path
-import nbformat
-from nbclient import NotebookClient
 
 def test_notebook_loads_csv_and_keeps_expected_rows():
     project_path = Path(__file__).resolve().parent
@@ -89,4 +96,7 @@ def test_notebook_loads_csv_and_keeps_expected_rows():
         if output.output_type == "stream"
     ]
 
-    assert any("Total Records: 18250" in output for output in outputs)
+    assert any(
+        "Total Records: 18250" in output
+        for output in outputs
+    )
