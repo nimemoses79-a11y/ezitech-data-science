@@ -1,3 +1,4 @@
+from pathlib import Path
 import pandas as pd
 from pandas.api.types import (
     is_numeric_dtype,
@@ -60,3 +61,32 @@ def test_column_data_types():
     )
 
     assert parsed_dates.notna().all()
+
+    from pathlib import Path
+import nbformat
+from nbclient import NotebookClient
+
+def test_notebook_loads_csv_and_keeps_expected_rows():
+    project_path = Path(__file__).resolve().parent
+    notebook_path = project_path / "eda.ipynb"
+
+    notebook = nbformat.read(notebook_path, as_version=4)
+
+    client = NotebookClient(
+        notebook,
+        timeout=120,
+        kernel_name="python3",
+        resources={"metadata": {"path": str(project_path)}}
+    )
+
+    executed_notebook = client.execute()
+
+    outputs = [
+        output.get("text", "")
+        for cell in executed_notebook.cells
+        if cell.cell_type == "code"
+        for output in cell.get("outputs", [])
+        if output.output_type == "stream"
+    ]
+
+    assert any("Total Records: 18250" in output for output in outputs)
