@@ -1,0 +1,16 @@
+
+# Python virtual environment
+.venv/
+
+# Coverage reports and data
+htmlcov/
+.coverage
+.coverage.*
+.pytest_cache/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+
+# Streamlit secrets
+.streamlit/secrets.toml
